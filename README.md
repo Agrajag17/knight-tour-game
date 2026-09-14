@@ -4,6 +4,8 @@ A small interactive app that lets you play the classic **Knight’s Tour** puzzl
 
 The goal is simple: move the knight across the board using standard chess moves, visiting every square exactly once.
 
+**[Play the live demo](https://knight-tour-puzzle.vercel.app/)**
+
 ---
 
 ## How to Play
