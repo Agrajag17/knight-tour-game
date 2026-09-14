@@ -1,66 +1,101 @@
-import { useState } from "react";
+import { useReducer } from "react";
 
-import type { BoardSize, BoardMatrix, Position } from "../types/game";
+import type {
+    BoardSize,
+    BoardMatrix,
+    Position,
+    GameStatus,
+} from "../types/game";
 
-import { createEmptyBoard, updateBoard } from "../utils/board";
+import { getValidMoves } from "../utils/knight";
 
-import { isKnightMove } from "../utils/knight";
+import { gameReducer, createInitialGameState } from "../reducers/gameReducer";
 
 interface UseGameActionsResult {
     boardSize: BoardSize;
     boardState: BoardMatrix;
     startPosition: Position | null;
     currentPosition: Position | null;
+    hintedMoves: Position[];
+    gameStatus: GameStatus;
+    gameProgress: string;
     handleCellClick: (position: Position) => void;
+    startNewGame: (boardSize?: BoardSize) => void;
+    undoLastMove: () => void;
+    toggleHints: () => void;
 };
 
 export function useGameActions(
     initialBoardSize: BoardSize,
 ): UseGameActionsResult {
-    const [board, setBoard] = useState<BoardMatrix>(() => createEmptyBoard(initialBoardSize));
-    const [moveHistory, setMoveHistory] = useState<Position[]>([]);
+    const [gameState, gameDispatch] = useReducer(
+        gameReducer,
+        initialBoardSize,
+        createInitialGameState,
+    );
 
+    const {
+        boardSize,
+        boardState,
+        moveHistory,
+        showHints,
+    } = gameState;
+
+    const totalCells = boardSize.rows * boardSize.columns;
     const step = moveHistory.length;
     const currentPosition = moveHistory[moveHistory.length - 1] ?? null;
     const startPosition = moveHistory[0] ?? null;
 
-    function handleCellClick(position: Position) {
-        const nextPosition = position;
-        const nextStep = step + 1;
+    const validMoves = currentPosition === null
+        ? []
+        : getValidMoves(boardSize, boardState, currentPosition);
 
-        if (currentPosition === null) {
-            setBoard((currentBoard) =>
-                updateBoard(currentBoard, nextPosition, nextStep)
-            );
+    const hintedMoves = showHints ? validMoves : [];
 
-            setMoveHistory([nextPosition]);
+    const gameStatus: GameStatus =
+        step === 0
+            ? 'idle'
+            : step === totalCells
+                ? 'won'
+                : validMoves.length === 0
+                    ? 'stuck'
+                    : 'playing';
 
-            return;
-        }
+    const gameProgress = `Step: ${step} / ${totalCells}`;
 
-        const isVisited =
-            board[position.x][position.y] !== null;
+    function handleCellClick(
+        position: Position,
+    ) {
+        gameDispatch({
+            type: 'move',
+            toPosition: position
+        });
+    }
 
-        const isValidMove = isKnightMove(currentPosition, nextPosition);
-
-        if (isVisited || !isValidMove) {
-            return;
-        }
-
-        setBoard((currentBoard) =>
-            updateBoard(currentBoard, nextPosition, nextStep)
-        );
-
-        setMoveHistory((currentHistory) =>
-            [...currentHistory, nextPosition]
-        );
+    function startNewGame(
+        newBoardSize = boardSize
+    ) {
+        gameDispatch({
+            type: 'restart',
+            boardSize: newBoardSize,
+        });
     }
 
     return {
-        boardSize: initialBoardSize,
-        boardState: board,
+        boardSize,
+        boardState,
         startPosition,
         currentPosition,
-        handleCellClick
+        hintedMoves,
+        gameStatus,
+        gameProgress,
+        handleCellClick,
+        startNewGame,
+        undoLastMove: () => gameDispatch({
+            type: 'undoLastMove'
+        }),
+        toggleHints: () => gameDispatch({
+            type: 'toggleHints',
+        }),
     };
 }

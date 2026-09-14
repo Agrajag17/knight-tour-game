@@ -1,4 +1,4 @@
-import type { BoardSize, BoardMatrix, Position } from "../types/game";
+import type { BoardMatrix, Position, BoardSize } from "../types/game";
 import type { CSSVariable } from "../types/ui";
 
 const CSS_CELL_BASE = "board-cell";
@@ -8,6 +8,7 @@ interface BoardProps {
     boardState: BoardMatrix;
     startPosition: Position | null;
     currentPosition: Position | null;
+    hintedMoves: Position[];
     onCellClick: (position: Position) => void;
 };
 
@@ -16,6 +17,7 @@ export function Board({
     boardState,
     startPosition,
     currentPosition,
+    hintedMoves,
     onCellClick,
 }: BoardProps) {
     const boardStyle: CSSVariable = {
@@ -39,6 +41,13 @@ export function Board({
                         currentPosition.x === rowIndex &&
                         currentPosition.y === columnIndex;
 
+                    const isHintedCell =
+                        hintedMoves.some(
+                            (position) =>
+                                position.x === rowIndex &&
+                                position.y === columnIndex
+                        );
+
                     const cellClasses = [
                         CSS_CELL_BASE,
                         isDark
@@ -46,6 +55,7 @@ export function Board({
                             : `${CSS_CELL_BASE}--light`,
                         isStartingCell ? `${CSS_CELL_BASE}--start` : '',
                         isCurrentCell ? `${CSS_CELL_BASE}--current` : '',
+                        isHintedCell ? `${CSS_CELL_BASE}--hinted` : '',
                         cellValue ? `${CSS_CELL_BASE}--visited` : '',
                     ].filter(Boolean).join(' ');
 

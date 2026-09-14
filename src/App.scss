@@ -65,6 +65,17 @@
         outline-offset: -5px;
     }
 
+    &--hinted {
+        &:after {
+            content: '';
+            width: 28%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background-color: var(--accent);
+            border: 1px solid rgba(from currentColor r g b / 65%);
+        }
+    }
+
     &--visited {
         cursor: default;
 
@@ -91,5 +102,69 @@
         &--current {
             color: var(--background);
         }
+    }
+}
+
+.game-toolbar {
+    display: flex;
+    place-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+
+    button {
+        cursor: pointer;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 4px;
+        border: 1px solid var(--dark);
+        background-color: var(--dark);
+        color: var(--light);
+        transition: opacity 0.15s linear, border-color 0.15s linear, background-color 0.15s linear, color 0.15s linear;
+
+        &:hover {
+            background-color: var(--foreground);
+            color: var(--accent);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            border-color: var(--light);
+
+            &:hover {
+                background-color: var(--background);
+            }
+        }
+
+        &:disabled {
+            background-color: var(--background);
+            border: 1px solid var(--foreground);
+            color: var(--foreground);
+            opacity: 0.5;
+            cursor: default;
+        }
+    }
+}
+
+.game-status {
+    width: 100%;
+    margin-top: 1rem;
+    border: 1px solid rgba(from currentColor r g b / 25%);
+    border-radius: 4px 4px 0 0;
+    padding-block: 0.5rem;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+
+    &--won {
+        background-color: var(--accent);
+        color: var(--dark);
+    }
+
+    &--stuck {
+        background-color: var(--light);
+        color: var(--dark);
+    }
+
+    &--playing {
+        border-color: currentColor;
     }
 }

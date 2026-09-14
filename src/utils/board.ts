@@ -27,3 +27,22 @@ export function updateBoard(
 
     return nextBoard;
 }
+
+export function isBoardCell(
+    boardSize: BoardSize,
+    position: Position,
+): boolean {
+    return (
+        position.x >= 0 &&
+        position.x < boardSize.rows &&
+        position.y >= 0 &&
+        position.y < boardSize.columns
+    );
+}
+
+export function isVisitedCell(
+    boardState: BoardMatrix,
+    position: Position
+): boolean {
+    return boardState[position.x][position.y] !== null;
+}
