@@ -1,0 +1,47 @@
+.knight-tour-game {
+    --light: hsl(from var(--foreground) h s 90%);
+    --dark: hsl(from var(--background) h s 15%);
+    width: min(100%, 480px);
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+
+    @media (prefers-color-scheme: dark) {
+        --light: hsl(from var(--foreground) h s 75%);
+        --dark: hsl(from var(--background) h s 20%);
+    }
+}
+
+.board-grid {
+    box-sizing: content-box;
+    width: 100%;
+    margin-top: 4px;
+    display: grid;
+    grid-template-rows: repeat(var(--board-rows, 6), minmax(0, 1fr));
+    grid-template-columns: repeat(var(--board-columns, 6), minmax(0, 1fr));
+    border: 1px solid var(--foreground);
+}
+
+.board-cell {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    place-items: center;
+    place-content: center;
+    border: none;
+    aspect-ratio: 1;
+    cursor: pointer;
+    container-type: inline-size;
+    container-name: board-cell;
+
+    &--light {
+        background-color: var(--light);
+        color: var(--dark);
+    }
+
+    &--dark {
+        background-color: var(--dark);
+        color: var(--light);
+    }
+}

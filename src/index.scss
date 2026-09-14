@@ -1,0 +1,53 @@
+:root {
+    --background: #fefefe;
+    --foreground: #171717;
+    --accent: #42FFC6;
+
+    --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+    --mono: ui-monospace, Consolas, monospace;
+
+    font-family: var(--sans);
+    font-size: 16px;
+    color-scheme: light dark;
+    color: var(--foreground);
+    background: var(--background);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background: #2f2516;
+        --foreground: #ecd9aa;
+        --accent: #FFCF24;
+    }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#root {
+    width: 800px;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+p {
+    margin: 0;
+}
