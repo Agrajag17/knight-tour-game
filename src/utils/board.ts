@@ -1,4 +1,4 @@
-import type { BoardSize, BoardMatrix } from "../types/game";
+import type { BoardSize, BoardMatrix, Position } from "../types/game";
 
 export const DEFAULT_BOARD_SIZE: BoardSize = { rows: 6, columns: 6 };
 
@@ -12,4 +12,18 @@ export function createEmptyBoard(
             () => null
         )
     );
+}
+
+export function updateBoard(
+    currentBoard: BoardMatrix,
+    position: Position,
+    step: number | null,
+): BoardMatrix {
+    const nextBoard = currentBoard.map(
+        (boardRow) => [...boardRow]
+    );
+
+    nextBoard[position.x][position.y] = step;
+
+    return nextBoard;
 }
