@@ -46,3 +46,28 @@ export function isVisitedCell(
 ): boolean {
     return boardState[position.x][position.y] !== null;
 }
+
+export const BOARD_SIZES: BoardSize[] = [
+    { rows: 5, columns: 5 },
+    { rows: 6, columns: 6 },
+    { rows: 8, columns: 8 },
+    { rows: 10, columns: 10 },
+    { rows: 6, columns: 8 },
+    { rows: 8, columns: 6 },
+    { rows: 8, columns: 10 },
+    { rows: 10, columns: 8 },
+];
+
+export function getBoardSizeOption(size: BoardSize): string {
+    return `${size.rows}x${size.columns}`;
+}
+
+export function isCurrentBoardSize(
+    boardSize: BoardSize,
+    nextBoardSize: BoardSize,
+): boolean {
+    return (
+        boardSize.rows === nextBoardSize.rows &&
+        boardSize.columns === nextBoardSize.columns
+    );
+}
